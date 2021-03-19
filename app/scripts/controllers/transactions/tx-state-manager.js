@@ -184,7 +184,9 @@ export default class TransactionStateManager extends EventEmitter {
     const snapshot = snapshotFromTxMeta(txMeta);
     txMeta.history.push(snapshot);
 
-    const transactions = this.getTransactions();
+    const transactions = this.getTransactions({
+      filterToCurrentNetwork: false,
+    });
     const txCount = transactions.length;
     const { txHistoryLimit } = this;
 
@@ -271,11 +273,6 @@ export default class TransactionStateManager extends EventEmitter {
    * the full list of Transactions for the currently selected chain/network.
    * Additional options can be provided to change what is included in the final
    * list.
-   *
-   * Note: The strange Object.<string,any> below is to make vscode's typescript
-   * intellisense parser display all the parameters when hovering over the
-   * method.
-   * https://github.com/Microsoft/TypeScript/issues/24746#issuecomment-403086947
    *
    * @param opts - options to change filter behavior
    * @param {Record<SearchableKeys, FilterPredicate>} [opts.searchCriteria] -
