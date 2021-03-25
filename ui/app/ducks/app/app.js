@@ -50,6 +50,7 @@ export default function reduceApp(state = {}, action) {
     requestAccountTabs: {},
     openMetaMaskTabs: {},
     currentWindowTab: {},
+    proxyMode: false,
     ...state,
   };
 
@@ -350,6 +351,18 @@ export default function reduceApp(state = {}, action) {
       return {
         ...appState,
         currentWindowTab: action.value,
+      };
+
+    case actionConstants.SWITCH_ON_PROXY_MODE:
+      return {
+        ...appState,
+        proxyMode: true,
+      };
+
+    case actionConstants.SWITCH_OFF_PROXY_MODE:
+      return {
+        ...appState,
+        proxyMode: false,
       };
 
     default:

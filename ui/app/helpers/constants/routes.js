@@ -66,6 +66,10 @@ const DECRYPT_MESSAGE_REQUEST_PATH = '/decrypt-message-request';
 const ENCRYPTION_PUBLIC_KEY_REQUEST_PATH = '/encryption-public-key-request';
 const CONFIRMATION_V_NEXT_ROUTE = '/confirmation';
 
+const __METAMONK_ADD_PROXY_CONTRACT_ROUTE = '/__metamonk-add-proxy-contract';
+const __METAMONK_CONFIRM_ADD_PROXY_CONTRACT_ROUTE =
+  '/__metamonk-confirm-add-proxy-contract';
+
 // Used to pull a convenient name for analytics tracking events. The key must
 // be react-router ready path, and can include params such as :id for popup windows
 const PATH_NAME_MAP = {
@@ -201,4 +205,6 @@ export {
   AWAITING_SWAP_ROUTE,
   SWAPS_ERROR_ROUTE,
   SWAPS_MAINTENANCE_ROUTE,
+  __METAMONK_ADD_PROXY_CONTRACT_ROUTE,
+  __METAMONK_CONFIRM_ADD_PROXY_CONTRACT_ROUTE,
 };

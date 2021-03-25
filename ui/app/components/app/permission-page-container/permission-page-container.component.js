@@ -123,6 +123,8 @@ export default class PermissionPageContainer extends Component {
       allIdentitiesSelected,
     } = this.props;
 
+    console.log('requestMetaData', requestMetadata);
+    console.log('domainMetadata', targetDomainMetadata);
     return (
       <div className="page-container permission-approval-container">
         <PermissionPageContainerContent

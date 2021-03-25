@@ -19,7 +19,9 @@ import RestoreVaultPage from '../keychains/restore-vault';
 import RevealSeedConfirmation from '../keychains/reveal-seed';
 import MobileSyncPage from '../mobile-sync';
 import AddTokenPage from '../add-token';
+import AddProxyContract from '../add-proxy-contract';
 import ConfirmAddTokenPage from '../confirm-add-token';
+import ConfirmAddProxyContract from '../confirm-add-proxy-contract';
 import ConfirmAddSuggestedTokenPage from '../confirm-add-suggested-token';
 import CreateAccountPage from '../create-account';
 import Loading from '../../components/ui/loading-screen';
@@ -54,6 +56,8 @@ import {
   UNLOCK_ROUTE,
   BUILD_QUOTE_ROUTE,
   CONFIRMATION_V_NEXT_ROUTE,
+  __METAMONK_ADD_PROXY_CONTRACT_ROUTE,
+  __METAMONK_CONFIRM_ADD_PROXY_CONTRACT_ROUTE,
 } from '../../helpers/constants/routes';
 
 import {
@@ -150,6 +154,16 @@ export default class Routes extends Component {
         />
         <Authenticated path={SWAPS_ROUTE} component={Swaps} />
         <Authenticated path={ADD_TOKEN_ROUTE} component={AddTokenPage} exact />
+        <Authenticated
+          exact
+          path={__METAMONK_ADD_PROXY_CONTRACT_ROUTE}
+          component={AddProxyContract}
+        />
+        <Authenticated
+          exact
+          path={__METAMONK_CONFIRM_ADD_PROXY_CONTRACT_ROUTE}
+          component={ConfirmAddProxyContract}
+        />
         <Authenticated
           path={CONFIRM_ADD_TOKEN_ROUTE}
           component={ConfirmAddTokenPage}

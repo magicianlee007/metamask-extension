@@ -485,10 +485,31 @@ export default class MetamaskController extends EventEmitter {
       version,
       // account mgmt
       getAccounts: async ({ origin }) => {
+        console.log('Origin =>', origin);
         if (origin === 'metamask') {
           const selectedAddress = this.preferencesController.getSelectedAddress();
           return selectedAddress ? [selectedAddress] : [];
+          // const prefUseProxy = this.preferencesController.store.getState()
+          //   .__metamonk_useProxy;
+          // // return selectedAddress ? [selectedAddress] : [];
+          // if (selectedAddress) {
+          //   const selectedIdentity = this.preferencesController.store.getState()
+          //     .__metamonk_selectedIdentity;
+          //   if (prefUseProxy && selectedIdentity) {
+          //     console.log('Selected Address', [selectedIdentity.address]);
+          //     return [selectedIdentity.address];
+          //   }
+          //   return [selectedAddress];
+          // }
+          // return [];
         } else if (this.isUnlocked()) {
+          //   const prefUseProxy = this.preferencesController.store.getState()
+          //     .__metamonk_useProxy;
+          //   const selectedIdentity = this.preferencesController.store.getState()
+          //     .__metamonk_selectedIdentity;
+          //   if (prefUseProxy && selectedIdentity) {
+          //     return [selectedIdentity.address];
+          //   }
           return await this.permissionsController.getAccounts(origin);
         }
         return []; // changing this is a breaking change
@@ -709,6 +730,23 @@ export default class MetamaskController extends EventEmitter {
       ),
       addKnownMethodData: nodeify(
         preferencesController.addKnownMethodData,
+        preferencesController,
+      ),
+
+      __metamonk_setUseProxy: nodeify(
+        preferencesController.setMetaMonkUseProxy,
+        preferencesController,
+      ),
+      __metamonk_addProxyContract: nodeify(
+        preferencesController.addMetaMonkProxyContract,
+        preferencesController,
+      ),
+      __metamonk_setIdentityLabel: nodeify(
+        preferencesController.setMetaMonkIdentityLabel,
+        preferencesController,
+      ),
+      __metamonk_setSelectedIdentity: nodeify(
+        preferencesController.setMetaMonkSelectedIdentity,
         preferencesController,
       ),
 

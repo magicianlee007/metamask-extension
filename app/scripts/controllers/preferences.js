@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import { strict as assert } from 'assert';
 import { ObservableStore } from '@metamask/obs-store';
 import { ethErrors } from 'eth-rpc-errors';
@@ -66,6 +67,10 @@ export default class PreferencesController {
       completedOnboarding: false,
       // ENS decentralized website resolution
       ipfsGateway: 'dweb.link',
+      __metamonk_useProxy: false,
+      __metamonk_proxyContracts: [],
+      __metamonk_accountIdentities: {},
+      __metamonk_selectedIdentity: null,
       ...opts.initState,
     };
 
@@ -820,5 +825,84 @@ export default class PreferencesController {
     const suggested = this.getSuggestedTokens();
     suggested[address] = newEntry;
     this.store.updateState({ suggestedTokens: suggested });
+  }
+
+  setMetaMonkUseProxy(val) {
+    this.store.updateState({ __metamonk_useProxy: val });
+
+    return Promise.resolve(val);
+  }
+
+  addMetaMonkProxyContract(rawAddress, nickname, functionHash) {
+    const address = normalizeAddress(rawAddress);
+    const newEntry = { address, nickname, functionHash };
+    const { __metamonk_proxyContracts: proxyContracts } = this.store.getState();
+    // const assetImages = this.getAssetImages();
+    const previousEntry = proxyContracts.find((pc) => {
+      return pc.address === address;
+    });
+    const previousIndex = proxyContracts.indexOf(previousEntry);
+
+    if (previousEntry) {
+      proxyContracts[previousIndex] = newEntry;
+    } else {
+      proxyContracts.push(newEntry);
+    }
+    // assetImages[address] = image
+
+    this._updateMetaMonkAccountIdentities(proxyContracts);
+    return Promise.resolve(proxyContracts);
+  }
+
+  setMetaMonkIdentityLabel(address, nickname) {
+    const { identities } = this.store.getState();
+
+    // XXX: set account label
+    identities[address] = {
+      ...identities[address],
+      address,
+      nickname,
+      isProxy: true,
+    };
+
+    this.store.updateState({ identities });
+    return Promise.resolve(identities);
+  }
+
+  setMetaMonkSelectedIdentity(identity) {
+    this.store.updateState({ __metamonk_selectedIdentity: identity });
+    return Promise.resolve(identity);
+  }
+
+  _getMetaMonkIdentityRelatedStates(selectedAddress) {
+    const accountIdentities = this.store.getState()
+      .__metamonk_accountIdentities;
+    if (!selectedAddress) {
+      selectedAddress = this.store.getState().selectedAddress;
+    }
+    const providerType = this.network.providerStore.getState().type;
+    if (!(selectedAddress in accountIdentities)) {
+      accountIdentities[selectedAddress] = {};
+    }
+    // if (!(providerType in accountIdentities[selectedAddress])) {
+    //   accountIdentities[selectedAddress] = [];
+    // }
+    const identities = accountIdentities[selectedAddress];
+    return { identities, accountIdentities, providerType, selectedAddress };
+  }
+
+  _updateMetaMonkAccountIdentities(identities) {
+    const {
+      accountIdentities,
+      // eslint-disable-next-line no-unused-vars
+      providerType,
+      // eslint-disable-next-line no-unused-vars
+      selectedAddress,
+    } = this._getMetaMonkIdentityRelatedStates();
+    accountIdentities[identities[0].address] = identities[0];
+    this.store.updateState({
+      __metamonk_accountIdentities: accountIdentities,
+      __metamonk_proxyContracts: identities,
+    });
   }
 }

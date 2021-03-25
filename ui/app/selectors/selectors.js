@@ -43,6 +43,14 @@ export function getNetworkIdentifier(state) {
   return nickname || rpcUrl || type;
 }
 
+export function getCurrentProxyMode(state) {
+  return state.metamask.__metamonk_useProxy;
+}
+
+export function getCurrentProxyIdentity(state) {
+  return state.metamask.__metamonk_selectedIdentity;
+}
+
 export function getMetricsNetworkIdentifier(state) {
   const { provider } = state.metamask;
   return provider.type === NETWORK_TYPE_RPC ? provider.rpcUrl : provider.type;

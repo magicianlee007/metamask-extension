@@ -8,6 +8,7 @@ export default function getRestrictedMethods({
         try {
           const accounts = await getKeyringAccounts();
           const identities = getIdentities();
+          console.log('Keyring Accounts', accounts);
           res.result = accounts.sort((firstAddress, secondAddress) => {
             if (!identities[firstAddress]) {
               throw new Error(`Missing identity for address ${firstAddress}`);

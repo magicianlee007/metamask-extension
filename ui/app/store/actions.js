@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import abi from 'human-standard-token-abi';
 import pify from 'pify';
 import log from 'loglevel';
@@ -1809,6 +1810,48 @@ export function hideSidebar() {
   };
 }
 
+export function switchOnProxyMode() {
+  return (dispatch) => {
+    console.log('DIspatching');
+    // eslint-disable-next-line consistent-return
+    background.__metamonk_setUseProxy(true, (err) => {
+      console.log(err);
+      dispatch(hideLoadingIndication());
+      if (err) {
+        return dispatch(displayWarning(err.message));
+      }
+    });
+
+    dispatch({
+      type: actionConstants.__METAMONK_SWITCH_METAMONK_MODE,
+      value: true,
+    });
+  };
+  // return {
+  //   type: actionConstants.SWITCH_ON_PROXY_MODE,
+  // };
+}
+
+export function switchOffProxyMode() {
+  return (dispatch) => {
+    // eslint-disable-next-line consistent-return
+    background.__metamonk_setUseProxy(false, (err) => {
+      dispatch(hideLoadingIndication());
+      if (err) {
+        return dispatch(displayWarning(err.message));
+      }
+    });
+
+    dispatch({
+      type: actionConstants.__METAMONK_SWITCH_METAMONK_MODE,
+      value: false,
+    });
+  };
+  // return {
+  //   type: actionConstants.SWITCH_OFF_PROXY_MODE,
+  // };
+}
+
 export function showAlert(msg) {
   return {
     type: actionConstants.ALERT_OPEN,
@@ -2874,4 +2917,94 @@ export function trackMetaMetricsEvent(payload, options) {
  */
 export function trackMetaMetricsPage(payload, options) {
   return promisifiedBackground.trackMetaMetricsPage(payload, options);
+}
+
+export function __metamonk_updateProxyContracts(newProxyContracts) {
+  return {
+    type: actionConstants.__METAMONK_UPDATE_PROXY_CONTRACTS,
+    newProxyContracts,
+  };
+}
+
+export function __metamonk_addIdentity(proxyContract) {
+  return (dispatch) => {
+    dispatch(showLoadingIndication());
+
+    const { address, nickname, functionHash } = proxyContract;
+
+    const _1 = new Promise((resolve, reject) => {
+      background.__metamonk_addProxyContract(
+        address,
+        nickname,
+        functionHash,
+        (err, proxyContracts) => {
+          if (err) {
+            dispatch(displayWarning(err.message));
+            reject(err);
+          }
+          dispatch(__metamonk_updateProxyContracts(proxyContracts));
+          resolve(proxyContracts);
+        },
+      );
+    });
+
+    const _2 = new Promise((resolve, reject) => {
+      background.__metamonk_setIdentityLabel(
+        address,
+        nickname,
+        (err, identities) => {
+          if (err) {
+            dispatch(displayWarning(err.message));
+            reject(err);
+          }
+          resolve(identities);
+        },
+      );
+    });
+
+    return Promise.all([_1, _2]).then(() => {
+      dispatch(hideLoadingIndication());
+    });
+  };
+}
+
+export function __metamonk_setSelectedIdentity(identity) {
+  // if it is not a proxy, use the main account instead
+  const newIdentity = identity.isProxy ? identity : null;
+  return (dispatch) => {
+    // eslint-disable-next-line consistent-return
+    background.__metamonk_setSelectedIdentity(newIdentity, (err) => {
+      if (err) {
+        return dispatch(displayWarning(err.message));
+      }
+    });
+
+    dispatch({
+      type: actionConstants.__METAMONK_SET_SELECTED_IDENTITY,
+      identity: newIdentity,
+    });
+  };
+}
+
+export function __metamonk_setPendingIdentities(pendingIdentities) {
+  const { importingIdentity = {}, selectedIdentity = {} } = pendingIdentities;
+  const { address, nickname } = importingIdentity;
+  const identities =
+    address && nickname
+      ? {
+          ...selectedIdentity,
+          [address]: { ...importingIdentity, importing: true },
+        }
+      : selectedIdentity;
+
+  return {
+    type: actionConstants.__METAMONK_SET_PENDING_IDENTITIES,
+    payload: identities,
+  };
+}
+
+export function __metamonk_clearPendingIdentities() {
+  return {
+    type: actionConstants.__METAMONK_CLEAR_PENDING_IDENTITIES,
+  };
 }

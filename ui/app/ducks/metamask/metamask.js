@@ -366,6 +366,30 @@ export default function reduceMetamask(state = {}, action) {
       };
     }
 
+    case actionConstants.__METAMONK_SWITCH_METAMONK_MODE:
+      return {
+        ...metamaskState,
+        __metamonk_useProxy: action.payload,
+      };
+
+    case actionConstants.__METAMONK_SET_PENDING_IDENTITIES:
+      return {
+        ...metamaskState,
+        __metamonk_pendingIdentities: { ...action.payload },
+      };
+
+    case actionConstants.__METAMONK_CLEAR_PENDING_IDENTITIES:
+      return {
+        ...metamaskState,
+        __metamonk_pendingIdentities: {},
+      };
+
+    case actionConstants.__METAMONK_SET_SELECTED_IDENTITY:
+      return {
+        ...metamaskState,
+        __metamonk_selectedIdentity: action.identity,
+      };
+
     default:
       return metamaskState;
   }

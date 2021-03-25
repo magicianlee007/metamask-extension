@@ -146,6 +146,9 @@ export class PermissionsController {
     return new Promise((resolve, _) => {
       const req = { method: 'eth_accounts' };
       const res = {};
+      const useProxy = this.preferences.getState().__metamonk_useProxy;
+      console.log('===============================');
+      console.log({ origin }, req, res, noop, _end);
       this.permissions.providerMiddlewareFunction(
         { origin },
         req,
@@ -154,9 +157,16 @@ export class PermissionsController {
         _end,
       );
 
+      // eslint-disable-next-line camelcase
+      // const THIS = this;
       function _end() {
+        // console.log(res.error, THIS.preferences.getState().__metamonk_useProxy);
         if (res.error || !Array.isArray(res.result)) {
           resolve([]);
+          // eslint-disable-next-line camelcase
+        } else if (useProxy) {
+          console.log('Permission Get Accounts function', res.result);
+          resolve(['0xb156d2d9cadb12a252a9015078fc5cb7e92e656e']);
         } else {
           resolve(res.result);
         }
@@ -181,6 +191,20 @@ export class PermissionsController {
    * @returns {Object} identities
    */
   _getIdentities() {
+    const preferenceState = this.preferences.getState();
+    console.log('Permission _getIdentities');
+    if (
+      preferenceState.__metamonk_useProxy &&
+      preferenceState.__metamonk_selectedIdentity
+    ) {
+      console.log('==============================');
+      console.log(preferenceState.__metamonk_selectedIdentity);
+      console.log(preferenceState.__metamonk_accountIdentities);
+      console.log(preferenceState.identities);
+      console.log(this.getKeyringAccounts());
+      console.log('==============================');
+      return preferenceState.__metamonk_accountIdentities;
+    }
     return this.preferences.getState().identities;
   }
 
@@ -468,6 +492,7 @@ export class PermissionsController {
 
     // We do not share accounts when the extension is locked.
     if (this._isUnlocked()) {
+      console.log(newAccounts);
       this._notifyDomain(origin, {
         method: NOTIFICATION_NAMES.accountsChanged,
         params: newAccounts,

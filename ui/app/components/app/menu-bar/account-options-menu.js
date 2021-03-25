@@ -3,7 +3,11 @@ import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { showModal } from '../../../store/actions';
+import {
+  showModal,
+  switchOnProxyMode,
+  switchOffProxyMode,
+} from '../../../store/actions';
 import { CONNECTED_ROUTE } from '../../../helpers/constants/routes';
 import { Menu, MenuItem } from '../../ui/menu';
 import getAccountLink from '../../../../lib/account-link';
@@ -12,6 +16,7 @@ import {
   getCurrentKeyring,
   getRpcPrefsForCurrentProvider,
   getSelectedIdentity,
+  getCurrentProxyMode,
 } from '../../../selectors';
 import { useI18nContext } from '../../../hooks/useI18nContext';
 import { useMetricEvent } from '../../../hooks/useMetricEvent';
@@ -55,6 +60,7 @@ export default function AccountOptionsMenu({ anchorElement, onClose }) {
   const chainId = useSelector(getCurrentChainId);
   const rpcPrefs = useSelector(getRpcPrefsForCurrentProvider);
   const selectedIdentity = useSelector(getSelectedIdentity);
+  const currentProxyMode = useSelector(getCurrentProxyMode);
 
   const { address } = selectedIdentity;
   const isRemovable = keyring.type !== 'HD Key Tree';
@@ -135,6 +141,17 @@ export default function AccountOptionsMenu({ anchorElement, onClose }) {
           {t('removeAccount')}
         </MenuItem>
       ) : null}
+      <MenuItem
+        data-testid="account-options-menu__proxy-mode"
+        onClick={() => {
+          dispatch(
+            currentProxyMode ? switchOffProxyMode() : switchOnProxyMode(),
+          );
+        }}
+        iconClassName="fas fa-user-secret"
+      >
+        {currentProxyMode ? t('switchOffProxyMode') : t('switchOnProxyMode')}
+      </MenuItem>
     </Menu>
   );
 }
