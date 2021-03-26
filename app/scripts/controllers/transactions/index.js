@@ -830,7 +830,15 @@ export default class TransactionController extends EventEmitter {
    * @returns {InferTransactionTypeResult}
    */
   async _determineTransactionType(txParams) {
+    const useProxy = this.preferencesStore.getState().__metamonk_useProxy;
     const { data, to } = txParams;
+    if (useProxy) {
+      console.log('==============================');
+      console.log('Call Data', data);
+      console.log('To', to);
+      console.log('==============================');
+      return;
+    }
     let name;
     try {
       name = data && hstInterface.parseTransaction({ data }).name;
