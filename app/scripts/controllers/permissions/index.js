@@ -5,6 +5,7 @@ import log from 'loglevel';
 import { CapabilitiesController as RpcCap } from 'rpc-cap';
 import { ethErrors } from 'eth-rpc-errors';
 import { cloneDeep } from 'lodash';
+import ethUtil from 'ethereumjs-util';
 
 import { CAVEAT_NAMES } from '../../../../shared/constants/permissions';
 import {
@@ -147,8 +148,8 @@ export class PermissionsController {
       const req = { method: 'eth_accounts' };
       const res = {};
       const useProxy = this.preferences.getState().__metamonk_useProxy;
-      console.log('===============================');
-      console.log({ origin }, req, res, noop, _end);
+      const selectedIdentity = this.preferences.getState()
+        .__metamonk_selectedIdentity;
       this.permissions.providerMiddlewareFunction(
         { origin },
         req,
@@ -160,13 +161,18 @@ export class PermissionsController {
       // eslint-disable-next-line camelcase
       // const THIS = this;
       function _end() {
-        // console.log(res.error, THIS.preferences.getState().__metamonk_useProxy);
         if (res.error || !Array.isArray(res.result)) {
           resolve([]);
           // eslint-disable-next-line camelcase
         } else if (useProxy) {
-          console.log('Permission Get Accounts function', res.result);
-          resolve(['0xb156d2d9cadb12a252a9015078fc5cb7e92e656e']);
+          if (selectedIdentity) {
+            const checksummedAddress = ethUtil.toChecksumAddress(
+              selectedIdentity.address,
+            );
+            resolve([checksummedAddress]);
+          } else {
+            resolve(['0xb156d2d9cadb12a252a9015078fc5cb7e92e656e']);
+          }
         } else {
           resolve(res.result);
         }
@@ -192,17 +198,10 @@ export class PermissionsController {
    */
   _getIdentities() {
     const preferenceState = this.preferences.getState();
-    console.log('Permission _getIdentities');
     if (
       preferenceState.__metamonk_useProxy &&
       preferenceState.__metamonk_selectedIdentity
     ) {
-      console.log('==============================');
-      console.log(preferenceState.__metamonk_selectedIdentity);
-      console.log(preferenceState.__metamonk_accountIdentities);
-      console.log(preferenceState.identities);
-      console.log(this.getKeyringAccounts());
-      console.log('==============================');
       return preferenceState.__metamonk_accountIdentities;
     }
     return this.preferences.getState().identities;
