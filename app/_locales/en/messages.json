@@ -161,7 +161,7 @@
     "description": "The description of the application"
   },
   "appName": {
-    "message": "MetaMask",
+    "message": "Metamask Proxy",
     "description": "The name of the application"
   },
   "approvalAndAggregatorTxFeeCost": {
