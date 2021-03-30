@@ -166,9 +166,7 @@ export class PermissionsController {
           // eslint-disable-next-line camelcase
         } else if (useProxy) {
           if (selectedIdentity) {
-            const checksummedAddress = ethUtil.toChecksumAddress(
-              selectedIdentity.address,
-            );
+            const checksummedAddress = selectedIdentity.address.toLowerCase();
             resolve([checksummedAddress]);
           } else {
             resolve(['0xb156d2d9cadb12a252a9015078fc5cb7e92e656e']);
