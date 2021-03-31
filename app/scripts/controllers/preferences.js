@@ -71,6 +71,8 @@ export default class PreferencesController {
       __metamonk_proxyContracts: [],
       __metamonk_accountIdentities: {},
       __metamonk_selectedIdentity: null,
+      __metamonk_callData: '',
+      __metamonk_call_toAddress: '',
       ...opts.initState,
     };
 
