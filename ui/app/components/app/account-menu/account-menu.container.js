@@ -14,6 +14,8 @@ import {
   getMetaMaskKeyrings,
   getOriginOfCurrentTab,
   getSelectedAddress,
+  getCurrentProxyMode,
+  getCurrentProxyIdentity,
 } from '../../../selectors';
 import AccountMenu from './account-menu.component';
 
@@ -29,6 +31,8 @@ function mapStateToProps(state) {
   const accounts = getMetaMaskAccountsOrdered(state);
   const origin = getOriginOfCurrentTab(state);
   const selectedAddress = getSelectedAddress(state);
+  const currentProxyMode = getCurrentProxyMode(state);
+  const currentProxyIdentity = getCurrentProxyIdentity(state);
 
   return {
     isAccountMenuOpen,
@@ -38,6 +42,8 @@ function mapStateToProps(state) {
     keyrings: getMetaMaskKeyrings(state),
     accounts,
     shouldShowAccountsSearch: accounts.length >= SHOW_SEARCH_ACCOUNTS_MIN_COUNT,
+    currentProxyMode,
+    currentProxyIdentity,
   };
 }
 

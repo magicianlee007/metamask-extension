@@ -3,10 +3,7 @@ import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { useMetricEvent } from '../../../hooks/useMetricEvent';
 import { useI18nContext } from '../../../hooks/useI18nContext';
-import {
-  getCurrentProxyMode,
-  getCurrentProxyIdentity,
-} from '../../../selectors';
+import { getCurrentProxyMode } from '../../../selectors';
 import {
   ADD_TOKEN_ROUTE,
   __METAMONK_ADD_PROXY_CONTRACT_ROUTE,
@@ -15,8 +12,6 @@ import Button from '../../ui/button';
 
 export default function AddTokenButton() {
   const currentProxyMode = useSelector(getCurrentProxyMode);
-  const currentProxyIdentity = useSelector(getCurrentProxyIdentity);
-  console.log(currentProxyIdentity);
   const addTokenEvent = useMetricEvent({
     eventOpts: {
       category: 'Navigation',
@@ -53,9 +48,6 @@ export default function AddTokenButton() {
           {/* {t('addToken')} */}
           Use Another...
         </Button>
-      )}
-      {currentProxyMode && currentProxyIdentity && (
-        <div>{currentProxyIdentity.address}</div>
       )}
     </div>
   );

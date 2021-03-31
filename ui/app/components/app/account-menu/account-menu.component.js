@@ -69,6 +69,8 @@ export default class AccountMenu extends Component {
     toggleAccountMenu: PropTypes.func,
     addressConnectedDomainMap: PropTypes.object,
     originOfCurrentTab: PropTypes.string,
+    currentProxyMode: PropTypes.bool,
+    currentProxyIdentity: PropTypes.any,
   };
 
   accountsRef;
@@ -305,6 +307,8 @@ export default class AccountMenu extends Component {
       toggleAccountMenu,
       lockMetamask,
       history,
+      currentProxyMode,
+      currentProxyIdentity,
     } = this.props;
 
     if (!isAccountMenuOpen) {
@@ -336,6 +340,11 @@ export default class AccountMenu extends Component {
               this.accountsRef = ref;
             }}
           >
+            {currentProxyMode && currentProxyIdentity && (
+              <div className="account-menu__proxy_address">
+                {currentProxyIdentity.address}
+              </div>
+            )}
             {this.renderAccounts()}
           </div>
           {this.renderScrollButton()}

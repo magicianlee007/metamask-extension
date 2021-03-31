@@ -123,6 +123,11 @@
     }
   }
 
+  &__proxy_address {
+    font-size: 12px;
+    text-align: center;
+  }
+
   &__accounts {
     overflow-y: auto;
     position: relative;
