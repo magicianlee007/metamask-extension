@@ -2315,5 +2315,8 @@
 
   "__metamonk_emptyProxyNickname": {
     "message": "Empty nickname for proxy contract"
+  },
+  "__metamonk_copyCallData": {
+    "message": "Copy Call Data"
   }
 }

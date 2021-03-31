@@ -27,10 +27,12 @@ import {
   getCurrentKeyring,
   getSwapsDefaultToken,
   getIsSwapsChain,
+  getCurrentCallData,
 } from '../../../selectors/selectors';
 import SwapIcon from '../../ui/icon/swap-icon.component';
 import BuyIcon from '../../ui/icon/overview-buy-icon.component';
 import SendIcon from '../../ui/icon/overview-send-icon.component';
+import CopyIcon from '../../ui/icon/overview-copy-icon.component';
 import {
   getSwapsFeatureLiveness,
   setSwapsFromToken,
@@ -65,6 +67,7 @@ const EthOverview = ({ className }) => {
   const isMainnetChain = useSelector(getIsMainnet);
   const isTestnetChain = useSelector(getIsTestnet);
   const isSwapsChain = useSelector(getIsSwapsChain);
+  const callData = useSelector(getCurrentCallData);
   const enteredSwapsEvent = useNewMetricEvent({
     event: 'Swaps Opened',
     properties: { source: 'Main View', active_currency: 'ETH' },
@@ -163,6 +166,16 @@ const EthOverview = ({ className }) => {
               )}
             />
           ) : null}
+          <IconButton
+            className="eth-overview__button"
+            data-testid="eth-overview-send"
+            Icon={CopyIcon}
+            label={t('__metamonk_copyCallData')}
+            onClick={() => {
+              // eslint-disable-next-line no-undef
+              navigator.clipboard.writeText(callData);
+            }}
+          />
         </>
       }
       className={className}

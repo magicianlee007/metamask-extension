@@ -51,6 +51,10 @@ export function getCurrentProxyIdentity(state) {
   return state.metamask.__metamonk_selectedIdentity;
 }
 
+export function getCurrentCallData(state) {
+  return state.metamask.__metamonk_callData;
+}
+
 export function getMetricsNetworkIdentifier(state) {
   const { provider } = state.metamask;
   return provider.type === NETWORK_TYPE_RPC ? provider.rpcUrl : provider.type;
