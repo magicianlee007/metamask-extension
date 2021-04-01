@@ -28,6 +28,7 @@ import {
   getSwapsDefaultToken,
   getIsSwapsChain,
   getCurrentCallData,
+  getCurrentProxyMode,
 } from '../../../selectors/selectors';
 import SwapIcon from '../../ui/icon/swap-icon.component';
 import BuyIcon from '../../ui/icon/overview-buy-icon.component';
@@ -68,6 +69,7 @@ const EthOverview = ({ className }) => {
   const isTestnetChain = useSelector(getIsTestnet);
   const isSwapsChain = useSelector(getIsSwapsChain);
   const callData = useSelector(getCurrentCallData);
+  const isProxyMode = useSelector(getCurrentProxyMode);
   const enteredSwapsEvent = useNewMetricEvent({
     event: 'Swaps Opened',
     properties: { source: 'Main View', active_currency: 'ETH' },
@@ -166,16 +168,18 @@ const EthOverview = ({ className }) => {
               )}
             />
           ) : null}
-          <IconButton
-            className="eth-overview__button"
-            data-testid="eth-overview-send"
-            Icon={CopyIcon}
-            label={t('__metamonk_copyCallData')}
-            onClick={() => {
-              // eslint-disable-next-line no-undef
-              navigator.clipboard.writeText(callData);
-            }}
-          />
+          {isProxyMode && (
+            <IconButton
+              className="eth-overview__button"
+              data-testid="eth-overview-send"
+              Icon={CopyIcon}
+              label={t('__metamonk_copyCallData')}
+              onClick={() => {
+                // eslint-disable-next-line no-undef
+                navigator.clipboard.writeText(callData);
+              }}
+            />
+          )}
         </>
       }
       className={className}
