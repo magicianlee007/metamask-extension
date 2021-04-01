@@ -887,21 +887,19 @@ export default class PreferencesController {
       accountIdentities[selectedAddress] = {};
     }
     // if (!(providerType in accountIdentities[selectedAddress])) {
-    //   accountIdentities[selectedAddress] = [];
+    //   accountIdentities[selectedAddress][providerType] = [];
     // }
-    const identities = accountIdentities[selectedAddress];
+    const identities = accountIdentities[selectedAddress][providerType];
     return { identities, accountIdentities, providerType, selectedAddress };
   }
 
   _updateMetaMonkAccountIdentities(identities) {
     const {
       accountIdentities,
-      // eslint-disable-next-line no-unused-vars
-      providerType,
-      // eslint-disable-next-line no-unused-vars
+      // providerType,
       selectedAddress,
     } = this._getMetaMonkIdentityRelatedStates();
-    accountIdentities[identities[0].address] = identities[0];
+    accountIdentities[selectedAddress] = identities;
     this.store.updateState({
       __metamonk_accountIdentities: accountIdentities,
       __metamonk_proxyContracts: identities,

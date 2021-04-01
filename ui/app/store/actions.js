@@ -2971,7 +2971,8 @@ export function __metamonk_addIdentity(proxyContract) {
 
 export function __metamonk_setSelectedIdentity(identity) {
   // if it is not a proxy, use the main account instead
-  const newIdentity = identity.isProxy ? identity : null;
+  // const newIdentity = identity.isProxy ? identity : null;
+  const newIdentity = identity;
   return (dispatch) => {
     // eslint-disable-next-line consistent-return
     background.__metamonk_setSelectedIdentity(newIdentity, (err) => {

@@ -33,12 +33,13 @@ export default class InfoBox extends Component {
         </div>
         <div className="identity-list__tokens-container">
           {results.map((_, i) => {
-            const { logo, nickname, address, isProxy = false } =
+            const { logo, nickname, address, isProxy = true } =
               results[i] || {};
-            const isCurrentIdentity = activeIdentity
-              ? address === activeIdentity.address
-              : !isProxy;
-
+            const isCurrentIdentity =
+              // eslint-disable-next-line no-negated-condition
+              activeIdentity !== null
+                ? address === activeIdentity.address
+                : !isProxy;
             return (
               Boolean(logo || nickname) && (
                 <div
