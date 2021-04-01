@@ -2932,6 +2932,7 @@ export function __metamonk_addIdentity(proxyContract) {
 
     const { address, nickname, functionHash } = proxyContract;
 
+    console.log('adding proxy contract', proxyContract);
     const _1 = new Promise((resolve, reject) => {
       background.__metamonk_addProxyContract(
         address,

@@ -176,7 +176,7 @@ const EthOverview = ({ className }) => {
               label={t('__metamonk_copyCallData')}
               onClick={() => {
                 // eslint-disable-next-line no-undef
-                navigator.clipboard.writeText(callData);
+                navigator.clipboard.writeText(JSON.stringify(callData));
               }}
             />
           )}
