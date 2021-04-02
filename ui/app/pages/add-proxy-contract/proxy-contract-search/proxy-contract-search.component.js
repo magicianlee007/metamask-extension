@@ -33,7 +33,10 @@ export default class ProxyContractSearch extends Component {
 
   handleSearch(searchQuery) {
     this.setState({ searchQuery });
-    const identResults = this.props.identities[this.props.selectedAddress];
+    let identResults = this.props.identities[this.props.selectedAddress];
+    if (!identResults) {
+      identResults = [];
+    }
     const results = identResults
       .concat(
         identResults.length
