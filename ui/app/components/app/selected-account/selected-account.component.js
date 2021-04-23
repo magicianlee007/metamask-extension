@@ -40,6 +40,7 @@ class SelectedAccount extends Component {
     } = this.props;
     const checksummedAddress = checksumAddress(selectedIdentity.address);
 
+    console.log(currentProxyIdentity);
     return (
       <div className="selected-account">
         <Tooltip
@@ -65,7 +66,9 @@ class SelectedAccount extends Component {
             }}
           >
             <div className="selected-account__name">
-              {selectedIdentity.name}
+              {currentProxyMode
+                ? currentProxyIdentity.nickname
+                : selectedIdentity.name}
             </div>
             <div className="selected-account__address">
               {shortenAddress(
