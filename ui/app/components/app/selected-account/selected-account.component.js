@@ -16,6 +16,8 @@ class SelectedAccount extends Component {
 
   static propTypes = {
     selectedIdentity: PropTypes.object.isRequired,
+    currentProxyIdentity: PropTypes.any,
+    currentProxyMode: PropTypes.bool,
   };
 
   componentDidMount() {
@@ -31,7 +33,11 @@ class SelectedAccount extends Component {
 
   render() {
     const { t } = this.context;
-    const { selectedIdentity } = this.props;
+    const {
+      selectedIdentity,
+      currentProxyIdentity,
+      currentProxyMode,
+    } = this.props;
     const checksummedAddress = checksumAddress(selectedIdentity.address);
 
     return (
@@ -51,14 +57,22 @@ class SelectedAccount extends Component {
                 () => this.setState({ copied: false }),
                 3000,
               );
-              copyToClipboard(checksummedAddress);
+              copyToClipboard(
+                currentProxyMode
+                  ? currentProxyIdentity.address
+                  : checksummedAddress,
+              );
             }}
           >
             <div className="selected-account__name">
               {selectedIdentity.name}
             </div>
             <div className="selected-account__address">
-              {shortenAddress(checksummedAddress)}
+              {shortenAddress(
+                currentProxyMode
+                  ? currentProxyIdentity.address
+                  : checksummedAddress,
+              )}
             </div>
           </button>
         </Tooltip>
