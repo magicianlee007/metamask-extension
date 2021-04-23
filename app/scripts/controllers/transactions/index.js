@@ -836,10 +836,10 @@ export default class TransactionController extends EventEmitter {
       console.log('==============================');
       console.log('Call Data', data);
       console.log('To', to);
+      console.log(txParams);
       console.log('==============================');
       this.preferencesStore.updateState({
-        __metamonk_callData: data,
-        __metamonk_call_toAddress: to,
+        __metamonk_callTxParam: txParams,
       });
       return;
     }

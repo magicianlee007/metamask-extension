@@ -52,10 +52,7 @@ export function getCurrentProxyIdentity(state) {
 }
 
 export function getCurrentCallData(state) {
-  return {
-    callData: state.metamask.__metamonk_callData,
-    to: state.metamask.__metamonk_call_toAddress,
-  };
+  return state.metamask.__metamonk_callTxParam;
 }
 
 export function getMetricsNetworkIdentifier(state) {
