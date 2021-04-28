@@ -17,6 +17,7 @@ import {
   getRpcPrefsForCurrentProvider,
   getSelectedIdentity,
   getCurrentProxyMode,
+  getCurrentProxyIdentity,
 } from '../../../selectors';
 import { useI18nContext } from '../../../hooks/useI18nContext';
 import { useMetricEvent } from '../../../hooks/useMetricEvent';
@@ -61,8 +62,12 @@ export default function AccountOptionsMenu({ anchorElement, onClose }) {
   const rpcPrefs = useSelector(getRpcPrefsForCurrentProvider);
   const selectedIdentity = useSelector(getSelectedIdentity);
   const currentProxyMode = useSelector(getCurrentProxyMode);
+  const currentProxyIdentity = useSelector(getCurrentProxyIdentity);
+  const { address } =
+    currentProxyMode && currentProxyIdentity
+      ? currentProxyIdentity
+      : selectedIdentity;
 
-  const { address } = selectedIdentity;
   const isRemovable = keyring.type !== 'HD Key Tree';
 
   return (
