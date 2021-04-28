@@ -67,7 +67,7 @@ export default class PreferencesController {
       completedOnboarding: false,
       // ENS decentralized website resolution
       ipfsGateway: 'dweb.link',
-      __metamonk_useProxy: false,
+      __metamonk_useProxy: true,
       __metamonk_proxyContracts: [],
       __metamonk_accountIdentities: {},
       __metamonk_selectedIdentity: null,
