@@ -66,13 +66,13 @@ class SelectedAccount extends Component {
             }}
           >
             <div className="selected-account__name">
-              {currentProxyMode
+              {currentProxyMode && currentProxyIdentity
                 ? currentProxyIdentity.nickname
                 : selectedIdentity.name}
             </div>
             <div className="selected-account__address">
               {shortenAddress(
-                currentProxyMode
+                currentProxyMode && currentProxyIdentity
                   ? currentProxyIdentity.address
                   : checksummedAddress,
               )}
