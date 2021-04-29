@@ -120,65 +120,92 @@ const EthOverview = ({ className }) => {
       }
       buttons={
         <>
-          <IconButton
-            className="eth-overview__button"
-            Icon={BuyIcon}
-            disabled={!(isMainnetChain || isTestnetChain)}
-            label={t('buy')}
-            onClick={() => {
-              depositEvent();
-              dispatch(showModal({ name: 'DEPOSIT_ETHER' }));
-            }}
-          />
-          <IconButton
-            className="eth-overview__button"
-            data-testid="eth-overview-send"
-            Icon={SendIcon}
-            label={t('send')}
-            onClick={() => {
-              sendEvent();
-              history.push(SEND_ROUTE);
-            }}
-          />
-          {swapsEnabled ? (
-            <IconButton
-              className="eth-overview__button"
-              disabled={!isSwapsChain}
-              Icon={SwapIcon}
-              onClick={() => {
-                if (isSwapsChain) {
-                  enteredSwapsEvent();
-                  dispatch(setSwapsFromToken(defaultSwapsToken));
-                  if (usingHardwareWallet) {
-                    global.platform.openExtensionInBrowser(BUILD_QUOTE_ROUTE);
-                  } else {
-                    history.push(BUILD_QUOTE_ROUTE);
-                  }
-                }
-              }}
-              label={t('swap')}
-              tooltipRender={(contents) => (
-                <Tooltip
-                  title={t('onlyAvailableOnMainnet')}
-                  position="bottom"
-                  disabled={isSwapsChain}
-                >
-                  {contents}
-                </Tooltip>
-              )}
-            />
-          ) : null}
-          {isProxyMode && (
-            <IconButton
-              className="eth-overview__button"
-              data-testid="eth-overview-send"
-              Icon={CopyIcon}
-              label={t('__metamonk_copyCallData')}
-              onClick={() => {
-                // eslint-disable-next-line no-undef
-                navigator.clipboard.writeText(JSON.stringify(callData));
-              }}
-            />
+          {isProxyMode ? (
+            <>
+              <IconButton
+                className="eth-overview__button"
+                data-testid="eth-overview-send"
+                Icon={CopyIcon}
+                label={t('__metamonk_copyCallData')}
+                onClick={() => {
+                  // eslint-disable-next-line no-undef
+                  navigator.clipboard.writeText(callData.data || '');
+                }}
+              />
+              <IconButton
+                className="eth-overview__button"
+                data-testid="eth-overview-send"
+                Icon={CopyIcon}
+                label={t('__metamonk_copyCallValue')}
+                onClick={() => {
+                  // eslint-disable-next-line no-undef
+                  navigator.clipboard.writeText(callData.value || '');
+                }}
+              />
+              <IconButton
+                className="eth-overview__button"
+                data-testid="eth-overview-send"
+                Icon={CopyIcon}
+                label={t('__metamonk_copyCallToAddress')}
+                onClick={() => {
+                  // eslint-disable-next-line no-undef
+                  navigator.clipboard.writeText(callData.to || '');
+                }}
+              />
+            </>
+          ) : (
+            <>
+              <IconButton
+                className="eth-overview__button"
+                Icon={BuyIcon}
+                disabled={!(isMainnetChain || isTestnetChain)}
+                label={t('buy')}
+                onClick={() => {
+                  depositEvent();
+                  dispatch(showModal({ name: 'DEPOSIT_ETHER' }));
+                }}
+              />
+              <IconButton
+                className="eth-overview__button"
+                data-testid="eth-overview-send"
+                Icon={SendIcon}
+                label={t('send')}
+                onClick={() => {
+                  sendEvent();
+                  history.push(SEND_ROUTE);
+                }}
+              />
+              {swapsEnabled ? (
+                <IconButton
+                  className="eth-overview__button"
+                  disabled={!isSwapsChain}
+                  Icon={SwapIcon}
+                  onClick={() => {
+                    if (isSwapsChain) {
+                      enteredSwapsEvent();
+                      dispatch(setSwapsFromToken(defaultSwapsToken));
+                      if (usingHardwareWallet) {
+                        global.platform.openExtensionInBrowser(
+                          BUILD_QUOTE_ROUTE,
+                        );
+                      } else {
+                        history.push(BUILD_QUOTE_ROUTE);
+                      }
+                    }
+                  }}
+                  label={t('swap')}
+                  tooltipRender={(contents) => (
+                    <Tooltip
+                      title={t('onlyAvailableOnMainnet')}
+                      position="bottom"
+                      disabled={isSwapsChain}
+                    >
+                      {contents}
+                    </Tooltip>
+                  )}
+                />
+              ) : null}
+            </>
           )}
         </>
       }

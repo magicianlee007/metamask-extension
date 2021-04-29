@@ -2318,5 +2318,11 @@
   },
   "__metamonk_copyCallData": {
     "message": "Copy Call Data"
+  },
+  "__metamonk_copyCallValue": {
+    "message": "Copy Value"
+  },
+  "__metamonk_copyCallToAddress": {
+    "message": "Copy To Address"
   }
 }
