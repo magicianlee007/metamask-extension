@@ -17,6 +17,7 @@ import {
   IMPORT_ACCOUNT_ROUTE,
   CONNECT_HARDWARE_ROUTE,
   DEFAULT_ROUTE,
+  __METAMONK_ADD_PROXY_CONTRACT_ROUTE,
 } from '../../../helpers/constants/routes';
 import TextField from '../../ui/text-field';
 import SearchIcon from '../../ui/search-icon';
@@ -360,7 +361,11 @@ export default class AccountMenu extends Component {
                 name: 'Clicked Create Account',
               },
             });
-            history.push(NEW_ACCOUNT_ROUTE);
+            if (currentProxyMode) {
+              history.push(__METAMONK_ADD_PROXY_CONTRACT_ROUTE);
+            } else {
+              history.push(NEW_ACCOUNT_ROUTE);
+            }
           }}
           icon={
             <img
@@ -369,7 +374,7 @@ export default class AccountMenu extends Component {
               alt={t('createAccount')}
             />
           }
-          text={t('createAccount')}
+          text={currentProxyMode ? 'Use Another Identity' : t('createAccount')}
         />
         <AccountMenuItem
           onClick={() => {

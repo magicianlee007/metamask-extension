@@ -35,7 +35,7 @@ export default function AddTokenButton() {
       >
         {t('addToken')}
       </Button>
-      {currentProxyMode && (
+      {/* {currentProxyMode && (
         <Button
           className="add-token-button__button"
           type="secondary"
@@ -45,10 +45,9 @@ export default function AddTokenButton() {
             history.push(__METAMONK_ADD_PROXY_CONTRACT_ROUTE);
           }}
         >
-          {/* {t('addToken')} */}
           Use Another...
         </Button>
-      )}
+      )} */}
     </div>
   );
 }
